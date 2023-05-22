@@ -108,8 +108,7 @@ const LinkLeadProperties = forwardRef<
       };
 
       leadPropertyDetails.push(leadProperty);
-    });
-    console.log(JSON.stringify({ leadPropertyDetails }));
+    });    
     axios
       .post(appBaseURL + "/api/LeadPropertyDetails",leadPropertyDetails)
       .then((response) => {

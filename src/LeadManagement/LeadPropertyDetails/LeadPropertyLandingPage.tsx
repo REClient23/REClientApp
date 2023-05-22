@@ -20,6 +20,8 @@ import "primereact/resources/primereact.css"; // core css
 import "primeicons/primeicons.css"; // icons
 import "primeflex/primeflex.css";
 import { AppContext } from "../../States/AppProvider";
+import axios from "axios";
+import { SuccessToaser, ErrorToaser } from "../../CommonComponents/Toast";
 
 const LeadPropertyLandingPage = forwardRef<
   ParentToChildHandler,
@@ -39,7 +41,7 @@ const LeadPropertyLandingPage = forwardRef<
     },
   }));
   const { state } = useContext(AppContext);
-  
+
   const refreshCTVData = (ctShortCode: any) => {
     fetch(appBaseURL + "/api/LeadPropertyDetails/" + `${ctShortCode}`)
       .then((result) => result.json())
@@ -49,6 +51,36 @@ const LeadPropertyLandingPage = forwardRef<
   const [srcProperties, setSrcProperties] = useState<Property[]>();
   const [currentLead, setCurrentLead] = useState<Leads>();
   const [layout, setLayout] = useState("grid");
+
+  const deleteLinkedProperty = (property: Property) => {
+    const leadPropertyDetails: any = {
+      propertyId: property.propertyId,
+      leadId: props.selectedLead.leadId,
+      leadPropertyID: 0,
+      status: "string",
+      remarks: "string",
+      createdDateTime: "2023-05-22T19:43:59.472Z",
+      createdBy: "string",
+      updatedDateTime: "2023-05-22T19:43:59.473Z",
+      updatedBy: "string",
+    };
+     axios
+      .delete(appBaseURL + "/api/LeadPropertyDetails", {
+        headers: {
+          "Content-Type": "application/json", // Replace with the appropriate media type
+        },
+        data: leadPropertyDetails,
+      })
+      .then((response) => {
+        SuccessToaser("Deleted Successfully");
+      })
+      .then((p) => refreshCTVData(props.selectedLead.leadId))
+      .catch((e) => {
+        ErrorToaser(e.response.data.substring(0, 100));
+        console.log(e.response);
+      });
+  };
+
   const getSeverity = (product: Property) => {
     switch (product.furnishedStatus) {
       case "INSTOCK":
@@ -93,6 +125,11 @@ const LeadPropertyLandingPage = forwardRef<
             <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
               <span className="text-2xl font-semibold">₹ {product.price}</span>
               <Button
+                icon="pi pi-trash"
+                className="p-button-rounded"
+                onClick={(e) => deleteLinkedProperty(product)}
+              ></Button>
+              <Button
                 icon="pi pi-shopping-cart"
                 className="p-button-rounded"
                 disabled={product.furnishedStatus === "OUTOFSTOCK"}
@@ -111,8 +148,8 @@ const LeadPropertyLandingPage = forwardRef<
 
     if (layout === "list") return listItem(product);
   };
-    return (
-    <div>    
+  return (
+    <div>
       <DataView
         value={srcProperties}
         itemTemplate={itemTemplate}
