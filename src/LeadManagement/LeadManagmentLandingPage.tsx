@@ -19,11 +19,13 @@ import { appBaseURL } from "../CommonComponents/ApplicationConstants";
 import Leads from "./Leads";
 import { Badge } from "primereact/badge";
 import AddLeadSchedules from "./LeadsScheduleAppointment/AddLeadSchedules";
+import LinkLeadProperties from "./LeadPropertyDetails/LinkLeadProperties";
 
 function LeadManagmentLandingPage() {
   const addChildRef = useRef<ParentToChildHandler>(null);
   const notesChildRef = useRef<ParentToChildHandler>(null);
   const scheduleChildRef = useRef<ParentToChildHandler>(null);
+  const linkPropertyChildRef = useRef<ParentToChildHandler>(null);
   const [paramLeadManagementHandlerProps, setLeadManagementHandlerProps] =
     useState<LeadManagementHandlerProps>();
   const [selectedCT, setSelectedCT] = useState<Leads>();
@@ -77,18 +79,24 @@ function LeadManagmentLandingPage() {
       },
     },
     {
-      label: "Delete",
-      icon: "pi pi-trash",
-      command: () => {},
+      label: "Link",
+      icon: "pi pi-link",
+      command: () => {   linkPropertyChildRef.current?.Action();},
     },
-    {
+  ];
+
+  /*
+  
+  {
       label: "React Website",
       icon: "pi pi-external-link",
       command: () => {
         window.location.href = "https://facebook.github.io/react/";
       },
     },
-  ];
+
+  */
+
   const countryTemplate = (option: Leads) => {
     return (
       <div className="user-info">
@@ -134,7 +142,7 @@ function LeadManagmentLandingPage() {
       <div style={{ position: "relative", zIndex: 9999 }}>
         <SpeedDial
           model={items}
-          radius={120}
+          radius={75}
           type="quarter-circle"
           direction="down-left"
           style={{ right: "2px", top: "5px" }}
@@ -142,6 +150,7 @@ function LeadManagmentLandingPage() {
       </div>
       <AddLeadNotes ref={addChildRef} selectedLead={selectedCT} />
       <AddLeadSchedules ref={scheduleChildRef} selectedLead={selectedCT} />
+      <LinkLeadProperties ref={linkPropertyChildRef} selectedLead={selectedCT} />
     </div>
   );
 }

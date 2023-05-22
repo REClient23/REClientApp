@@ -1,4 +1,9 @@
-import React, { forwardRef, useContext, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useState,
+} from "react";
 import {
   LeadManagementHandlerProps,
   ParentToChildHandler,
@@ -8,14 +13,13 @@ import { FormGroup, InputGroup } from "@blueprintjs/core";
 import { Button } from "primereact/button";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Rating } from "primereact/rating";
-import { Tag } from "primereact/tag"; 
+import { Tag } from "primereact/tag";
 import { Property } from "../../Property/Property";
 import { appBaseURL } from "../../CommonComponents/ApplicationConstants";
-import 'primereact/resources/primereact.css';                       // core css
-import 'primeicons/primeicons.css';                                 // icons
-import 'primeflex/primeflex.css';        
+import "primereact/resources/primereact.css"; // core css
+import "primeicons/primeicons.css"; // icons
+import "primeflex/primeflex.css";
 import { AppContext } from "../../States/AppProvider";
-
 
 const LeadPropertyLandingPage = forwardRef<
   ParentToChildHandler,
@@ -31,19 +35,19 @@ const LeadPropertyLandingPage = forwardRef<
         phNumber: props.selectedLead.phNumber,
       };
       setCurrentLead(lead);
-      refreshCTVData("test");
+      refreshCTVData(props.selectedLead.leadId);
     },
   }));
   const { state } = useContext(AppContext);
-///" + `${ctShortCode}`
+  
   const refreshCTVData = (ctShortCode: any) => {
-    fetch(appBaseURL + "/api/Property")
+    fetch(appBaseURL + "/api/LeadPropertyDetails/" + `${ctShortCode}`)
       .then((result) => result.json())
-      .then((subrowData: Property[]) => setSrcProperties(subrowData) )
+      .then((subrowData: Property[]) => setSrcProperties(subrowData))
       .catch((error) => console.log(error));
   };
   const [srcProperties, setSrcProperties] = useState<Property[]>();
-  const [currentLead, setCurrentLead] = useState<Leads>();  
+  const [currentLead, setCurrentLead] = useState<Leads>();
   const [layout, setLayout] = useState("grid");
   const getSeverity = (product: Property) => {
     switch (product.furnishedStatus) {
@@ -71,7 +75,9 @@ const LeadPropertyLandingPage = forwardRef<
           />
           <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-              <div className="text-2xl font-bold text-900">{product.propertyName}</div>
+              <div className="text-2xl font-bold text-900">
+                {product.propertyName}
+              </div>
               <Rating value={product.noOfBeds} readOnly cancel={false}></Rating>
               <div className="flex align-items-center gap-3">
                 <span className="flex align-items-center gap-2">
@@ -97,21 +103,22 @@ const LeadPropertyLandingPage = forwardRef<
       </div>
     );
   };
- 
+
   const itemTemplate = (product: Property, layout: "list" | "grid") => {
     if (!product) {
       return;
     }
 
-    if (layout === "list") return listItem(product);    
-  };    
-  return (
-    <div>
+    if (layout === "list") return listItem(product);
+  };
+    return (
+    <div>    
       <DataView
         value={srcProperties}
-        itemTemplate={itemTemplate}        
-        paginator rows={4}
-        style={{width:"100vh"}}
+        itemTemplate={itemTemplate}
+        paginator
+        rows={4}
+        style={{ width: "100vh" }}
       />
     </div>
   );
