@@ -152,7 +152,7 @@ export default function PropertyLandingPage() {
         OnAddClickHandler={OnAddClickHandler}
         OnEditClickHandler={onEditButtonClick}
         OnDeleteClickHandler={onDeleteButtonClick}
-        IsAddActionVisible={true}
+        ModuleName="PROPERTY"
       />
       <AgGridReact
         rowData={rowData}

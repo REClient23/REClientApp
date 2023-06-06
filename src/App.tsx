@@ -20,6 +20,7 @@ import PropertyLandingPage from "./Property/PropertyLandingPage";
 import Login_Form from "./Login/Login_form";
 import GoogleLoginPage from "./Login/GoogleLogin";
 import TelegramIntegration from "./Telegram/TelegramIntegration";
+import RoleManagementLandingPage from "./AccessManagement/Rolemanagement/RoleManagementLandingPage";
 function App() {
   const [loggedin, setLoggedin] = useState(false);
   return loggedin ? (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/CodeTypeValue" element={<CodeTypeValueLandingPage />} />
           <Route path="/LeadManagement" element={<LeadManagmentLandingPage />}/>
           <Route path="/Property" element={<PropertyLandingPage />} />
+          <Route path="/RoleManagement" element={<RoleManagementLandingPage />} />
         </Routes>
       </BrowserRouter>
     </div>

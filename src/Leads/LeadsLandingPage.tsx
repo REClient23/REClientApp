@@ -93,7 +93,7 @@ function LeadsLandingPage() {
         OnAddClickHandler={OnAddClickHandler}
         OnEditClickHandler={onEditButtonClick}
         OnDeleteClickHandler={onDeleteButtonClick}
-        IsAddActionVisible={true}        
+        ModuleName="LEADS"
       />
       <AgGridReact
         rowData={rowData}
