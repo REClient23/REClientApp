@@ -29,7 +29,7 @@ import {
   ErrorToaser,
   SuccessToaser,
 } from "../../CommonComponents/Toast";
-import { appBaseURL } from "../../CommonComponents/ApplicationConstants";
+import { ModuleName, appBaseURL } from "../../CommonComponents/ApplicationConstants";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -88,15 +88,7 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
     const [selectedUser, setselectedUser] =useState<CodeTypeValues[]>();    
     const [srcUser, setsrcUser] =useState<CodeTypeValues[]>();
 
-    enum ModuleName {
-      CodeTypes = "CodeTypes",
-      CodeTypeValues = "CodeTypeValues",
-      DASHBOARD = "DASHBOARD",
-      LEADS = "LEADS",
-      PROPERTY = "PROPERTY",
-      RoleManagement="RoleManagement",
-      User="User"
-    }
+  
 
     const Initialize = () => {
       setIspopupOpen(true);      
