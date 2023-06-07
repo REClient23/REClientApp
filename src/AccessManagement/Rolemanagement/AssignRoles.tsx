@@ -62,6 +62,7 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
         setSelectedProperty(undefined);
         setSelectedDashBoard(undefined);
         setselectedRoleManagement(undefined);
+        setselectedUser(undefined);
         Initialize();
       },
     }));    
@@ -84,6 +85,9 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
     const [selectedRoleManagement, setselectedRoleManagement] =useState<CodeTypeValues[]>();
     const [srcRoleManagement, setsrcRoleManagement] =useState<CodeTypeValues[]>();
 
+    const [selectedUser, setselectedUser] =useState<CodeTypeValues[]>();    
+    const [srcUser, setsrcUser] =useState<CodeTypeValues[]>();
+
     enum ModuleName {
       CodeTypes = "CodeTypes",
       CodeTypeValues = "CodeTypeValues",
@@ -91,6 +95,7 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
       LEADS = "LEADS",
       PROPERTY = "PROPERTY",
       RoleManagement="RoleManagement",
+      User="User"
     }
 
     const Initialize = () => {
@@ -101,6 +106,7 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
       refreshCTVData(ModuleName.LEADS);
       refreshCTVData(ModuleName.PROPERTY);
       refreshCTVData(ModuleName.RoleManagement);
+      refreshCTVData(ModuleName.User);
     };
 
     const OnCloseHandler = () => {
@@ -157,7 +163,10 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
         let roleModPermission: ModuleRolePermissionDetails = mapdata(props, datapoint);  
         RoleModPermissionDetails.push(roleModPermission);        
       });
-
+      selectedUser?.forEach((datapoint: CodeTypeValues) => {        
+        let roleModPermission: ModuleRolePermissionDetails = mapdata(props, datapoint);  
+        RoleModPermissionDetails.push(roleModPermission);        
+      });
       axios
         .post(appBaseURL + "/api/RoleModulePermissons", RoleModPermissionDetails)
         .then((response) => {
@@ -212,6 +221,10 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
           case ModuleName.RoleManagement:
             setsrcRoleManagement(data);
             selectedCTVData(ModuleName.RoleManagement);
+            break;
+            case ModuleName.User:
+            setsrcUser(data);
+            selectedCTVData(ModuleName.User);
           break;
         default:
           break;
@@ -237,6 +250,9 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
           break;
           case ModuleName.RoleManagement:
             setselectedRoleManagement(data);            
+          break;
+          case ModuleName.User:
+            setselectedUser(data);            
           break;
         default:
           break;
@@ -346,6 +362,22 @@ const AssignRoles = forwardRef<ParentToChildHandler, ParentChildHandlerProps>(
                       value={selectedRoleManagement}
                       onChange={(e) => setselectedRoleManagement(e.value)}
                       options={srcRoleManagement}
+                      optionLabel="description"
+                      display="chip"
+                      placeholder="Select Permissions"
+                      maxSelectedLabels={100}
+                      className="w-full"
+                    />
+                  </FormGroup>
+                  <FormGroup
+                    label="User Management"
+                    labelFor="text-input"
+                    labelInfo="*"
+                  >
+                    <MultiSelect
+                      value={selectedUser}
+                      onChange={(e) => setselectedUser(e.value)}
+                      options={srcUser}
                       optionLabel="description"
                       display="chip"
                       placeholder="Select Permissions"

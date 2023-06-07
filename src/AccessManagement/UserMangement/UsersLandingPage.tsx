@@ -95,7 +95,7 @@ export default function UsersLandingPage() {
         OnAddClickHandler={OnAddClickHandler}
         OnEditClickHandler={onEditButtonClick}
         OnDeleteClickHandler={onDeleteButtonClick}
-        ModuleName="CodeTypes"
+        ModuleName="User"
       />
       <AgGridReact
         rowData={rowData}
