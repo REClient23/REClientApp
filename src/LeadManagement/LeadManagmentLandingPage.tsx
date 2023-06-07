@@ -33,7 +33,7 @@ function LeadManagmentLandingPage() {
   const objrowdata = { ...selectedCT };
   const refreshData = () => {};
   const getLeadsData = () => {
-    fetch(appBaseURL + "/LeadMgmt")
+    fetch(appBaseURL + "/api/LeadMgmt")
       .then((result) => result.json())
       .then((rowData: Leads[]) => setRowData(rowData))
       .catch((error) => console.log(error));

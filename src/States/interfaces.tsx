@@ -3,6 +3,8 @@ export interface IUser {
   username: string;
   Image:string;
   active: boolean;
+  email:string;
+  role:string;
 }
 export interface ITheme {
   dark: boolean;

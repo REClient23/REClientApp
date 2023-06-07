@@ -71,11 +71,11 @@ export default function RoleManagementLandingPage() {
   const onEditButtonClick = () => {
     if( selectedRowData === undefined  || selectedRowData?.shortCode==="")
     {
-      ErrorToaser("Please select a row to edit");
+      ErrorToaser("Please select a Role to add Permissions");
     }
     else
     {
-      
+      addChildRef.current?.Action();  
     }
   };
 

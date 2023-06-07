@@ -3,33 +3,28 @@ import { Button, Label } from "@blueprintjs/core";
 import { Toolbar } from "primereact/toolbar";
 
 import "./CustomToolBar.css";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Tag } from "primereact/tag";
 import { appBaseURL } from "./ApplicationConstants";
 import { CodeTypeValues } from "../CodeTypeValues/CodeTypeValues";
+import { AppContext } from "../States/AppProvider";
 
 interface HeaderParams {
   HeaderText: string;
   OnAddClickHandler(): any;
   OnEditClickHandler(): any;
-  OnDeleteClickHandler(): any;  
+  OnDeleteClickHandler(): any;
   ModuleName: string;
 }
 
 interface paramsdata {
- 
   RoleShortCode: string;
 }
 const CustomToolBar = (params: HeaderParams) => {
-
-
+  const { state } = useContext(AppContext);
   const [isAddVisible, setAddVisible] = useState<boolean>(false);
   const [isEditVisible, setEditVisible] = useState<boolean>(false);
   const [isDeleteVisible, setDeleteVisible] = useState<boolean>(false);
-  
-  const permissionparams: paramsdata = {    
-    RoleShortCode: "SuperUser",
-  };
 
   useEffect(() => selectedCTVData(), []);
   const selectedCTVData = () => {
@@ -38,42 +33,45 @@ const CustomToolBar = (params: HeaderParams) => {
         "/api/Permissions/" +
         `${params.ModuleName}` +
         "/" +
-        `${permissionparams.RoleShortCode}`
+        `${state.user.role}`
     )
       .then((result) => result.json())
-      .then((subrowData: CodeTypeValues[]) => {           
-      LoadPermission(subrowData);}
-      )
+      .then((subrowData: CodeTypeValues[]) => {
+        LoadPermission(subrowData);
+      })
       .catch((error) => console.log(error));
   };
 
-const LoadPermission=(subrowData: CodeTypeValues[])=>
-{
-  console.log(subrowData);
-const addavailable=subrowData?.some(record=>record.shortCode === "ADD");
-console.log(addavailable);
-if(addavailable === true)
-{
-  setAddVisible(addavailable);
-}
-const editavailable=subrowData?.some(record=>record.shortCode === "EDIT");
-if(editavailable === true)
-{
-  setEditVisible(editavailable);
-}
-const deleteavailable=subrowData?.some(record=>record.shortCode === "DELETE");
-if(deleteavailable === true)
-{
-  setDeleteVisible(deleteavailable);
-}
+  const LoadPermission = (subrowData: CodeTypeValues[]) => {
+    console.log(subrowData);
+    const addavailable = subrowData?.some(
+      (record) => record.shortCode === "ADD"
+    );
+    console.log(addavailable);
+    if (addavailable === true) {
+      setAddVisible(addavailable);
+    }
+    const editavailable = subrowData?.some(
+      (record) => record.shortCode === "EDIT"
+    );
+    if (editavailable === true) {
+      setEditVisible(editavailable);
+    }
+    const deleteavailable = subrowData?.some(
+      (record) => record.shortCode === "DELETE"
+    );
+    if (deleteavailable === true) {
+      setDeleteVisible(deleteavailable);
+    }
 
-if(permissionparams.RoleShortCode === "SuperUser")
-{
-setAddVisible(true);
-setEditVisible(true);
-setDeleteVisible(true);
-}
-}
+    if (state.user.role === "SuperAdmin") {
+      setEditVisible(true);
+      if (params.ModuleName !== "RoleManagement") {
+        setAddVisible(true);
+        setDeleteVisible(true);
+      }
+    }
+  };
 
   const startContent = (
     <div>
@@ -117,7 +115,7 @@ setDeleteVisible(true);
       )}
     </React.Fragment>
   );
-   
+
   return (
     <Toolbar
       start={startContent}
