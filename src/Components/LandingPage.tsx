@@ -56,6 +56,11 @@ function LandingPage() {
             Role Management
             </Link>
           </Button>
+          <Button icon="new-person" className="bp4-minimal">
+            <Link to={`Users`} style={{ color: "aliceblue" }}>
+           Users
+            </Link>
+          </Button>
         </div>
       </div>
     </React.Fragment>
