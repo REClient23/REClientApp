@@ -1,5 +1,5 @@
 import { Button, Icon } from "@blueprintjs/core";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useContext, useMemo, useRef, useState } from "react";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import {
   LeadManagementHandlerProps,
@@ -20,8 +20,10 @@ import Leads from "./Leads";
 import { Badge } from "primereact/badge";
 import AddLeadSchedules from "./LeadsScheduleAppointment/AddLeadSchedules";
 import LinkLeadProperties from "./LeadPropertyDetails/LinkLeadProperties";
+import { AppContext } from "../States/AppProvider";
 
 function LeadManagmentLandingPage() {
+  const { state } = useContext(AppContext);
   const addChildRef = useRef<ParentToChildHandler>(null);
   const notesChildRef = useRef<ParentToChildHandler>(null);
   const scheduleChildRef = useRef<ParentToChildHandler>(null);
@@ -33,7 +35,7 @@ function LeadManagmentLandingPage() {
   const objrowdata = { ...selectedCT };
   const refreshData = () => {};
   const getLeadsData = () => {
-    fetch(appBaseURL + "/api/LeadMgmt")
+    fetch(appBaseURL + "/api/LeadMgmt"+ `/${state.user.email}` + `/${state.user.role}`)
       .then((result) => result.json())
       .then((rowData: Leads[]) => setRowData(rowData))
       .catch((error) => console.log(error));
