@@ -23,6 +23,8 @@ import { AppContext } from "../../States/AppProvider";
 import axios from "axios";
 import { SuccessToaser, ErrorToaser } from "../../CommonComponents/Toast";
 
+import defaultImage from "./Real-Estate-PNG-Photo.png"
+
 const LeadPropertyLandingPage = forwardRef<
   ParentToChildHandler,
   LeadManagementHandlerProps
@@ -102,7 +104,7 @@ const LeadPropertyLandingPage = forwardRef<
         <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
           <img
             className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-            src={state.user.Image}
+            src={defaultImage}
             alt={product.propertyName}
           />
           <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
